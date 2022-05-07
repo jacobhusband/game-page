@@ -37,6 +37,26 @@ export default class Player {
       ctx.lineTo(this.x + 12.5, this.y + 25);
       ctx.lineTo(this.x + 12.5, this.y - 25);
       ctx.lineTo(this.x - 12.5, this.y);
+    } else if (this.degree == 45) {
+      ctx.moveTo(this.x + 12.5, this.y - 12.5);
+      ctx.lineTo(this.x - 22.85, this.y - 12.5);
+      ctx.lineTo(this.x + 12.5, this.y + 22.85);
+      ctx.lineTo(this.x + 12.5, this.y - 12.5);
+    } else if (this.degree == 135) {
+      ctx.moveTo(this.x + 12.5, this.y + 12.5);
+      ctx.lineTo(this.x - 22.85, this.y + 12.5);
+      ctx.lineTo(this.x + 12.5, this.y - 22.85);
+      ctx.lineTo(this.x + 12.5, this.y + 12.5);
+    } else if (this.degree == 225) {
+      ctx.moveTo(this.x - 12.5, this.y + 12.5);
+      ctx.lineTo(this.x + 22.85, this.y + 12.5);
+      ctx.lineTo(this.x - 12.5, this.y - 22.85);
+      ctx.lineTo(this.x - 12.5, this.y + 12.5);
+    } else if (this.degree == 315) {
+      ctx.moveTo(this.x - 12.5, this.y - 12.5);
+      ctx.lineTo(this.x + 22.85, this.y - 12.5);
+      ctx.lineTo(this.x - 12.5, this.y + 22.85);
+      ctx.lineTo(this.x - 12.5, this.y - 12.5);
     }
     ctx.stroke();
     ctx.fill();
@@ -58,7 +78,7 @@ export default class Player {
     } else if (this.leftPressed == true && this.downPressed == true) {
       this.x -= this.speed;
       this.y += this.speed;
-      this.degree = 215;
+      this.degree = 225;
     } else if (this.leftPressed == true && this.rightPressed == true) {
       this.x += this.speed;
       this.degree = 0;
