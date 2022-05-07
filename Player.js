@@ -1,8 +1,8 @@
 export default class Player {
-  constructor(x, y, canvas) {
+  constructor(x, y, bulletController) {
     this.x = x;
     this.y = y;
-    this.canvas = canvas;
+    this.bulletController = bulletController;
     this.degree = 0;
     this.width = 25;
     this.height = 25;
@@ -60,6 +60,52 @@ export default class Player {
     }
     ctx.stroke();
     ctx.fill();
+    this.shoot();
+  }
+
+  shoot() {
+    if (this.shootPressed) {
+      console.log(`Shoot!`);
+      const speed = 5;
+      const delay = 7;
+      const damage = 1;
+      let bulletX = this.x - 2;
+      let bulletY = this.y - 12.5;
+      if (this.degree == 0) {
+        bulletX = this.x - 2;
+        bulletY = this.y - 12.5;
+      } else if (this.degree == 90) {
+        bulletX = this.x + 14.5;
+        bulletY = this.y - 3;
+      } else if (this.degree == 180) {
+        bulletX = this.x - 2;
+        bulletY = this.y + 12.5;
+      } else if (this.degree == 270) {
+        bulletX = this.x - 18.5;
+        bulletY = this.y - 3;
+      } else if (this.degree == 45) {
+        bulletX = this.x + 12.5;
+        bulletY = this.y - 12.5;
+      } else if (this.degree == 135) {
+        bulletX = this.x + 12.5;
+        bulletY = this.y + 12.5;
+      } else if (this.degree == 225) {
+        bulletX = this.x - 12.5;
+        bulletY = this.y + 12.5;
+      } else if (this.degree == 315) {
+        bulletX = this.x - 12.5;
+        bulletY = this.y - 12.5;
+      }
+
+      this.bulletController.shoot(
+        bulletX,
+        bulletY,
+        speed,
+        damage,
+        delay,
+        this.degree
+      );
+    }
   }
 
   move() {
@@ -112,7 +158,7 @@ export default class Player {
       this.upPressed = true;
     }
     if (event.keyCode == 32) {
-      this.spacePressed = true;
+      this.shootPressed = true;
     }
   };
 
@@ -128,7 +174,7 @@ export default class Player {
       this.upPressed = false;
     }
     if (event.keyCode == 32) {
-      this.spacePressed = false;
+      this.shootPressed = false;
     }
   };
 }
