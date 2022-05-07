@@ -13,6 +13,8 @@ export default class Bullet {
     ctx.fillStyle = this.color;
     let width = 5;
     let height = 15;
+    let angle45Long = height * Math.cos(Math.PI / 4);
+    let angle45Short = width * Math.cos(Math.PI / 4);
 
     if (this.degree == 0) {
       this.y -= this.speed;
@@ -44,43 +46,55 @@ export default class Bullet {
     if (this.degree == 45) {
       ctx.beginPath();
       ctx.moveTo(this.x, this.y);
-      ctx.lineTo(this.x + 3.536, this.y + 3.536);
-      ctx.lineTo(this.x + 10.606 + 3.536, this.y - 10.606 + 3.536);
-      ctx.lineTo(this.x + 10.606, this.y - 10.606);
+      ctx.lineTo(this.x + angle45Short, this.y + angle45Short);
+      ctx.lineTo(
+        this.x + angle45Long + angle45Short,
+        this.y - angle45Long + angle45Short
+      );
+      ctx.lineTo(this.x + angle45Long, this.y - angle45Long);
       ctx.closePath();
       ctx.fill();
-      this.x += 5;
-      this.y -= 5;
+      this.x += this.speed;
+      this.y -= this.speed;
     } else if (this.degree == 135) {
       ctx.beginPath();
       ctx.moveTo(this.x, this.y);
-      ctx.lineTo(this.x - 3.536, this.y + 3.536);
-      ctx.lineTo(this.x + 10.606 - 3.536, this.y + 10.606 + 3.536);
-      ctx.lineTo(this.x + 10.606, this.y + 10.606);
+      ctx.lineTo(this.x - angle45Short, this.y + angle45Short);
+      ctx.lineTo(
+        this.x + angle45Long - angle45Short,
+        this.y + angle45Long + angle45Short
+      );
+      ctx.lineTo(this.x + angle45Long, this.y + angle45Long);
       ctx.closePath();
       ctx.fill();
-      this.x += 5;
-      this.y += 5;
+      this.x += this.speed;
+      this.y += this.speed;
     } else if (this.degree == 225) {
       ctx.beginPath();
       ctx.moveTo(this.x, this.y);
-      ctx.lineTo(this.x + 3.536, this.y + 3.536);
-      ctx.lineTo(this.x - 10.606 + 3.536, this.y + 10.606 + 3.536);
-      ctx.lineTo(this.x - 10.606, this.y + 10.606);
+      ctx.lineTo(this.x + angle45Short, this.y + angle45Short);
+      ctx.lineTo(
+        this.x - angle45Long + angle45Short,
+        this.y + angle45Long + angle45Short
+      );
+      ctx.lineTo(this.x - angle45Long, this.y + angle45Long);
       ctx.closePath();
       ctx.fill();
-      this.x -= 5;
-      this.y += 5;
+      this.x -= this.speed;
+      this.y += this.speed;
     } else if (this.degree == 315) {
       ctx.beginPath();
       ctx.moveTo(this.x, this.y);
-      ctx.lineTo(this.x - 3.536, this.y + 3.536);
-      ctx.lineTo(this.x - 10.606 - 3.536, this.y - 10.606 + 3.536);
-      ctx.lineTo(this.x - 10.606, this.y - 10.606);
+      ctx.lineTo(this.x - angle45Short, this.y + angle45Short);
+      ctx.lineTo(
+        this.x - angle45Long - angle45Short,
+        this.y - angle45Long + angle45Short
+      );
+      ctx.lineTo(this.x - angle45Long, this.y - angle45Long);
       ctx.closePath();
       ctx.fill();
-      this.x -= 5;
-      this.y -= 5;
+      this.x -= this.speed;
+      this.y -= this.speed;
     }
   }
 }
