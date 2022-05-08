@@ -22,7 +22,7 @@ function gameLoop() {
   setCommonStyle();
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  enemyController.draw(ctx);
+  enemyController.draw(ctx, player.x, player.y);
   bulletController.draw(ctx);
   player.draw(ctx);
 }

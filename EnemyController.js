@@ -9,12 +9,17 @@ export default class EnemyController {
   }
 
   spawn() {
-    if (timerTillNextEnemy <= 0) {
+    if (this.timerTillNextEnemy <= 0) {
       let [x, y] = this.calcSpawnLocation();
+      console.log(`spawn location x: ${x} y: ${y}`)
       let speed = this.calcSpeed(10);
-      let radius = this.calcRadius(20, 3);
+      let radius = this.calcRadius(100, 3);
+      let delay = 30;
       this.enemies.push(new Enemy(x, y, speed, radius));
+      this.timerTillNextEnemy = delay;
     }
+
+    this.timerTillNextEnemy--;
   }
 
   calcSpawnLocation() {
@@ -56,8 +61,12 @@ export default class EnemyController {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  draw(ctx) {
-    this.enemies.forEach((enemy) => {});
+  draw(ctx, playerX, playerY) {
+    this.spawn();
+    this.enemies.forEach((enemy) => {
+      enemy.draw(ctx, playerX, playerY);
+    });
   }
+
   isEnemyDead() {}
 }
