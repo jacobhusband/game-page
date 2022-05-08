@@ -7,6 +7,8 @@ export default class Player {
     this.width = 25;
     this.height = 25;
     this.speed = 4;
+    this.bulletWidth = 3;
+    this.bulletHeight = 20;
 
     document.addEventListener("keydown", this.keyDownHandler);
     document.addEventListener("keyup", this.keyUpHandler);
@@ -71,33 +73,35 @@ export default class Player {
       const speed = 8;
       const delay = 7;
       const damage = 1;
-      let bulletX = this.x - 2;
-      let bulletY = this.y - 12.5;
+      let bulletX, bulletY = 0;
+      let width = this.bulletWidth;
+      let height = this.bulletHeight;
+      let align = width*.707/2
 
       if (this.degree == 0) {
-        bulletX = this.x - 2;
+        bulletX = this.x - width/2;
         bulletY = this.y - 12.5;
       } else if (this.degree == 90) {
-        bulletX = this.x + 14.5;
-        bulletY = this.y - 3;
+        bulletX = this.x + 12.5;
+        bulletY = this.y - width/2;
       } else if (this.degree == 180) {
-        bulletX = this.x - 2;
+        bulletX = this.x - width/2;
         bulletY = this.y + 12.5;
       } else if (this.degree == 270) {
-        bulletX = this.x - 18.5;
-        bulletY = this.y - 3;
+        bulletX = this.x - 12.5;
+        bulletY = this.y - width/2;
       } else if (this.degree == 45) {
-        bulletX = this.x + 12.5;
-        bulletY = this.y - 12.5;
+        bulletX = this.x + 12.5 - align;
+        bulletY = this.y - 12.5 - align;
       } else if (this.degree == 135) {
-        bulletX = this.x + 12.5;
-        bulletY = this.y + 12.5;
+        bulletX = this.x + 12.5 + align;
+        bulletY = this.y + 12.5 - align;
       } else if (this.degree == 225) {
-        bulletX = this.x - 12.5;
-        bulletY = this.y + 12.5;
+        bulletX = this.x - 12.5 - align;
+        bulletY = this.y + 12.5 - align;
       } else if (this.degree == 315) {
-        bulletX = this.x - 12.5;
-        bulletY = this.y - 12.5;
+        bulletX = this.x - 12.5 + align;
+        bulletY = this.y - 12.5 - align;
       }
 
       this.bulletController.shoot(
@@ -106,7 +110,9 @@ export default class Player {
         speed,
         damage,
         delay,
-        this.degree
+        this.degree,
+        width,
+        height
       );
     }
   }
