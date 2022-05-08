@@ -30,6 +30,4 @@ export default class Enemy {
     this.x += ux * this.speed;
     this.y += uy * this.speed;
   }
-
-  getHit()
 }
