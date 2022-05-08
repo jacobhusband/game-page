@@ -18,7 +18,6 @@ export default class BulletController {
   }
 
   draw(ctx) {
-    console.log(this.bullets.length);
     this.bullets.forEach((bullet) => {
       if (this.isBulletOffScreen(bullet)) {
         const index = this.bullets.indexOf(bullet);
@@ -29,7 +28,12 @@ export default class BulletController {
   }
 
   isBulletOffScreen(bullet) {
-    if (bullet.y <= 0 || bullet.y >= 600 || bullet.x <= 0 || bullet.x >= 550) {
+    if (
+      bullet.y <= 0 ||
+      bullet.y >= window.innerHeight ||
+      bullet.x <= 0 ||
+      bullet.x >= window.innerWidth
+    ) {
       return true;
     }
   }

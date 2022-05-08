@@ -18,3 +18,7 @@ body {
   height: 100vh;
   background: linear-gradient(#14213d, #005f73);
 }
+
+.game-title {
+  display:  none;
+}

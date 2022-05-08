@@ -17,6 +17,9 @@ export default class Player {
     ctx.strokeStyle = "yellow";
     ctx.fillStyle = "black";
     ctx.beginPath();
+
+    // replace this with one function that calculates the center
+    // and a second function that calculates the rotated triangle nodes
     if (this.degree == 0) {
       ctx.moveTo(this.x, this.y - 12.5);
       ctx.lineTo(this.x - 25, this.y + 12.5);
@@ -65,12 +68,12 @@ export default class Player {
 
   shoot() {
     if (this.shootPressed) {
-      console.log(`Shoot!`);
-      const speed = 5;
+      const speed = 8;
       const delay = 7;
       const damage = 1;
       let bulletX = this.x - 2;
       let bulletY = this.y - 12.5;
+
       if (this.degree == 0) {
         bulletX = this.x - 2;
         bulletY = this.y - 12.5;
