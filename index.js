@@ -9,8 +9,6 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-console.log(`Canvas width: ${canvas.width}`);
-
 const collisionDetector = new CollisionDetector(canvas);
 const enemyController = new EnemyController(canvas);
 const bulletController = new BulletController(canvas);
@@ -26,9 +24,14 @@ function gameLoop() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   enemyController.draw(ctx, player.x, player.y);
   console.log(`Bullets: ${bulletController.bullets}`);
-  collisionDetector.detectCollision(ctx, bulletController.bullets, enemyController.enemies);
+  collisionDetector.detectEnemyHit(
+    ctx,
+    bulletController.bullets,
+    enemyController.enemies
+  );
   bulletController.draw(ctx);
   player.draw(ctx);
+  collisionDetector.detectPlayerHit(ctx, enemyController.enemies, player);
 }
 
 function setCommonStyle() {
