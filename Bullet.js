@@ -8,6 +8,8 @@ export default class Bullet {
     this.width = width;
     this.height = height;
     this.color = "red";
+    this.cornerNodes = [];
+    this.hp = 1;
   }
 
   draw(ctx) {
@@ -16,8 +18,8 @@ export default class Bullet {
     let long = this.height;
     let angle45Long = long * Math.cos(Math.PI / 4);
     let angle45Short = short * Math.cos(Math.PI / 4);
-    let cornerPoints = [];
     let speeds = [];
+    let cornerPoints = []
     let degrees = [];
 
     degrees = [0, 45, 90, 135, 180, 225, 270, 315];
@@ -42,6 +44,7 @@ export default class Bullet {
         ctx.fill();
         this.x += speeds[i][0];
         this.y += speeds[i][1];
+        this.cornerNodes = [[cornerPoints[i][0][0], cornerPoints[i][0][1]], [cornerPoints[i][1][0], cornerPoints[i][1][1]], [cornerPoints[i][2][0], cornerPoints[i][2][1]], [cornerPoints[i][3][0], cornerPoints[i][3][1]]];
         i = degrees.length;
       }
     }

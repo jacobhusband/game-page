@@ -12,9 +12,9 @@ export default class EnemyController {
     if (this.timerTillNextEnemy <= 0) {
       let [x, y] = this.calcSpawnLocation();
       console.log(`spawn location x: ${x} y: ${y}`)
-      let speed = this.calcSpeed(10);
-      let radius = this.calcRadius(100, 3);
-      let delay = 30;
+      let speed = this.calcSpeed(4);
+      let radius = this.calcRadius(100, 10);
+      let delay = 300;
       this.enemies.push(new Enemy(x, y, speed, radius));
       this.timerTillNextEnemy = delay;
     }
@@ -62,11 +62,19 @@ export default class EnemyController {
   }
 
   draw(ctx, playerX, playerY) {
+    this.checkHP();
     this.spawn();
     this.enemies.forEach((enemy) => {
       enemy.draw(ctx, playerX, playerY);
     });
   }
 
-  isEnemyDead() {}
+  checkHP(){
+    this.enemies.forEach((enemy) => {
+        if(enemy.radius <= 3){
+          const index = this.enemies.indexOf(enemy);
+          this.enemies.splice(index, 1)
+        }
+    })
+  }
 }

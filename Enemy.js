@@ -5,12 +5,13 @@ export default class Enemy {
     this.speed = speed;
     this.radius = radius;
     this.color = 'white';
-    this.hp = radius*2;
+    this.hp = radius;
   }
 
   draw(ctx, playerX, playerY) {
     let [ux, uy] = this.calcDirection(playerX, playerY);
     this.move(ux, uy);
+    ctx.beginPath();
     ctx.moveTo(this.x, this.y)
     ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
     ctx.fillStyle = this.color;

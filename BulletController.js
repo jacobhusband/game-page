@@ -1,4 +1,5 @@
 import Bullet from "./Bullet.js";
+import Enemy from "./Enemy.js";
 
 export default class BulletController {
   bullets = [];
@@ -23,8 +24,13 @@ export default class BulletController {
         const index = this.bullets.indexOf(bullet);
         this.bullets.splice(index, 1);
       }
+      if (bullet.hp <= 0) {
+        const index = this.bullets.indexOf(bullet);
+        this.bullets.splice(index, 1)
+      }
       bullet.draw(ctx);
     });
+
   }
 
   isBulletOffScreen(bullet) {

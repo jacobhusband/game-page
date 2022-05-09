@@ -6,7 +6,7 @@ export default class Player {
     this.degree = 0;
     this.width = 25;
     this.height = 25;
-    this.speed = 4;
+    this.speed = 6;
     this.bulletWidth = 3;
     this.bulletHeight = 20;
 
@@ -64,7 +64,7 @@ export default class Player {
       ctx.lineTo(this.x - 12.5, this.y - 12.5);
     }
     ctx.stroke();
-    ctx.fill();
+    // ctx.fill();
     this.shoot();
   }
 
@@ -72,7 +72,7 @@ export default class Player {
     if (this.shootPressed) {
       const speed = 8;
       const delay = 7;
-      const damage = 1;
+      const damage = 5;
       let bulletX, bulletY = 0;
       let width = this.bulletWidth;
       let height = this.bulletHeight;
