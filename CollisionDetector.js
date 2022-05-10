@@ -5,7 +5,7 @@ export default class CollisionDetector {
     this.canvas = canvas;
   }
 
-  detectEnemyHit(ctx, bullets, enemies) {
+  detectEnemyHit(ctx, bullets, enemies, score) {
     bullets.forEach((bullet) => {
       bullet.cornerNodes.forEach((node) => {
         enemies.forEach((enemy) => {
@@ -17,6 +17,7 @@ export default class CollisionDetector {
               ? (enemy.radius = 0)
               : (enemy.radius = enemy.radius);
             bullet.hp -= 1;
+            score.score += bullet.damage;
           }
         });
       });
@@ -24,13 +25,10 @@ export default class CollisionDetector {
   }
 
   detectPlayerHit(ctx, enemies, player) {
-    console.log(`${player.cornerNodes}`);
     let [center, radius] = this.calcPlayerHitBox(player.cornerNodes);
     enemies.forEach((enemy) => {
       let d = this.calcDistance(enemy.x, center[0], enemy.y, center[1]);
-      console.log(`radius: ${radius}`);
-      console.log(`d: ${d}`);
-      if (d <= radius) {
+      if (d <= radius + enemy.radius) {
         new EndGame();
       }
     });
@@ -41,36 +39,28 @@ export default class CollisionDetector {
       (nodes[0][0] + nodes[1][0] + nodes[2][0]) / 3,
       (nodes[0][1] + nodes[1][1] + nodes[2][1]) / 3,
     ];
-    console.log(`center: ${center}`);
     let A = this.calcDistance(
       nodes[1][0],
       nodes[0][0],
       nodes[1][1],
       nodes[0][1]
     );
-    console.log(`A: ${A}`);
     let B = this.calcDistance(
       nodes[2][0],
       nodes[1][0],
       nodes[2][1],
       nodes[1][1]
     );
-    console.log(`B: ${B}`);
     let C = this.calcDistance(
       nodes[0][0],
       nodes[2][0],
       nodes[0][1],
       nodes[2][1]
     );
-    console.log(`C: ${C}`);
     let P = A + B + C;
-    console.log(`Perimeter: ${P}`);
     let X = P / 2;
-    console.log(`X: ${X}`);
     let area = [X * (X - A) * (X - B) * (X - C)] ** (1 / 2);
-    console.log(`Area: ${area}`);
     let radius = (2 * area) / P;
-    console.log(`Radius: ${radius}`);
     return [center, radius];
   }
 
