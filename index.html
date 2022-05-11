@@ -11,32 +11,45 @@
     <div class="game-title">
       <h1>Triangle Versus Circles</h1>
     </div>
+    <button class="endgame">QUIT</button>
     <div id="myModal" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
         <div class="modal-header">
-          <div class="modal-header-text"><h2>Skills</h2></div>
+          <div class="modal-header-text"><h2>Level Up Attributes</h2></div>
           <div class="model-header-x"><span class="close">&times;</span></div>
         </div>
         <div class="modal-body">
           <div class="top-body">
             <div>
-              <p id="highscore">Highscore: 0</p>
+              <p class="body-text">Score</p>
+              <p class="body-text" id="round-score">0</p>
             </div>
             <div>
-              <p id="round-score">Score: 0</p>
+              <p class="body-text">Highscore</p>
+              <p class="body-text" id="highscore">0</p>
             </div>
             <div>
-              <p id="cash">Cash: 0</p>
+              <p class="body-text">Cash</p>
+              <p class="body-text" id="cash">$0</p>
             </div>
           </div>
           <div class="skill-container">
-            <p>Bullet Speed</p>
-            <img
-              src="./Sprites/Bullet_Speed.png"
-              width="50%"
-              alt="Bullet Speed"
-            />
+            <div class="center">
+              <div class="skill-align">
+                <div class="body-text">BULLET</div>
+                <div class="body-text">SPEED</div>
+              </div>
+              <img
+                class="skill-image"
+                src="./Sprites/Bullet_Speed.png"
+                width="30%"
+                alt="Bullet Speed"
+              />
+              <div class="body-text cost" id="bullet-speed-cost">
+                COST: $100
+              </div>
+            </div>
             <div class="center">
               <button class="skill-button">^</button>
               <p id="skill-level">0</p>

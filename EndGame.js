@@ -27,8 +27,8 @@ export default class EndGame {
     if (this.player.highscore < this.score.score) {
       this.player.highscore = this.score.score;
     }
-    highscore.innerHTML = `Highscore: ${this.player.highscore}`;
-    scoremodal.innerHTML = `Score: ${this.score.score}`;
+    highscore.innerHTML = `${this.player.highscore}`;
+    scoremodal.innerHTML = `${this.score.score}`;
   }
 
   restartGame() {

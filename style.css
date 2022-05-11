@@ -3,6 +3,8 @@ h2,
 p,
 button {
   font-family: Arial, Helvetica, sans-serif;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 h1 {
@@ -21,20 +23,38 @@ body {
   background: linear-gradient(#14213d, #005f73);
 }
 
-h2 {
-  margin-block-start: 0;
-  margin-block-end: 0;
+.endgame {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  color: white;
+  background: Transparent;
+  font-size: 900;
+  font-weight: bold;
+  border: none;
 }
 
 .top-body {
   display: flex;
-  gap: 0.5em;
+  width: 400px;
+  margin: 0 0 1em 0;
+  justify-content: space-around;
 }
 
 .game-title {
   display: none;
 }
 
+.body-text {
+  font-weight: 700;
+  font-size: 16px;
+  color: white;
+}
+
+.cost {
+  margin-top: 0.5em;
+  font-size: 12px;
+}
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */
@@ -53,10 +73,10 @@ h2 {
 /* Modal Content */
 .modal-content {
   position: relative;
-  background-color: #fefefe;
+  background-color: black;
   margin: auto;
   padding: 0;
-  border: 1px solid #888;
+  border: 3px solid white;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
@@ -102,15 +122,25 @@ h2 {
   cursor: pointer;
 }
 
-.skill-container {
-  display: inline-flex;
+#skill-level {
+  margin: 0.5em 0;
+}
+
+.skill-align {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+}
+
+.skill-container {
+  display: inline-flex;
+  justify-content: space-around;
+  align-items: center;
   background-color: #888;
-  padding: 2em;
+  padding: 1em;
   border-radius: 10%;
-  border: 1px solid black;
+  border: 3px solid green;
 }
 
 .modal-header {
@@ -118,7 +148,7 @@ h2 {
   justify-content: center;
   align-items: center;
   padding: 2px 16px;
-  background-color: #5cb85c;
+  background-color: #1d1d1d;
   color: white;
 }
 
@@ -142,7 +172,7 @@ h2 {
 }
 
 .modal-footer {
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   padding: 2px 16px;
@@ -172,6 +202,10 @@ h2 {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+}
+
+.skill-button:hover {
+  color: white;
 }
 
 .center {
