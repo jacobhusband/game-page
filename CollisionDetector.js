@@ -31,7 +31,8 @@ export default class CollisionDetector {
     player,
     score,
     collisiondetection,
-    enemyController
+    enemyController,
+    bulletController
   ) {
     let [center, radius] = this.calcPlayerHitBox(player.cornerNodes);
     enemies.forEach((enemy) => {
@@ -43,7 +44,8 @@ export default class CollisionDetector {
           player,
           score,
           collisiondetection,
-          enemyController
+          enemyController,
+          bulletController
         );
         console.log(`cash amount: ${player.cash}`);
         this.value += 1;

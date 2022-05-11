@@ -16,6 +16,8 @@ export default class Player {
     this.delay = 10;
     this.highscore = 0;
     this.roundScore = 0;
+    this.bulletSpeedCurrentCost = 100;
+    this.bulletSpeedCount = 1;
 
     document.addEventListener("keydown", this.keyDownHandler);
     document.addEventListener("keyup", this.keyUpHandler);

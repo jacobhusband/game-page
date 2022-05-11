@@ -6,7 +6,6 @@ import Score from "./Score.js";
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
-let isPaused = false;
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -42,7 +41,8 @@ function gameLoop() {
     player,
     score,
     collisionDetector,
-    enemyController
+    enemyController,
+    bulletController
   );
 }
 
