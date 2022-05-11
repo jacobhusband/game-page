@@ -6,6 +6,7 @@ import Score from "./Score.js";
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
+let value;
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -35,7 +36,12 @@ function gameLoop() {
   );
   bulletController.draw(ctx);
   player.draw(ctx);
-  collisionDetector.detectPlayerHit(ctx, enemyController.enemies, player);
+  collisionDetector.detectPlayerHit(
+    ctx,
+    enemyController.enemies,
+    player,
+    score
+  );
 }
 
 function setCommonStyle() {
@@ -45,4 +51,11 @@ function setCommonStyle() {
   ctx.lineWidth = 5;
 }
 
-setInterval(gameLoop, 1000 / 60);
+// setInterval(gameLoop, 1000 / 60);
+
+const gameInterval = setInterval(() => {
+  gameLoop();
+  if (collisionDetector.value > 0) {
+    clearInterval(gameInterval);
+  }
+}, 1000 / 60);

@@ -3,6 +3,7 @@ import EndGame from "./EndGame.js";
 export default class CollisionDetector {
   constructor(canvas) {
     this.canvas = canvas;
+    this.value = 0;
   }
 
   detectEnemyHit(ctx, bullets, enemies, score) {
@@ -24,12 +25,15 @@ export default class CollisionDetector {
     });
   }
 
-  detectPlayerHit(ctx, enemies, player) {
+  detectPlayerHit(ctx, enemies, player, score, cash) {
     let [center, radius] = this.calcPlayerHitBox(player.cornerNodes);
     enemies.forEach((enemy) => {
       let d = this.calcDistance(enemy.x, center[0], enemy.y, center[1]);
       if (d <= radius + enemy.radius) {
-        new EndGame();
+        player.cash += score.score;
+        new EndGame(this.canvas, enemies, score);
+        console.log(`cash amount: ${player.cash}`);
+        this.value += 1;
       }
     });
   }

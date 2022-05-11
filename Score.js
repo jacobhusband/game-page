@@ -4,14 +4,17 @@ export default class Score {
     this.ctx = ctx;
     this.width = width;
     this.score = 0;
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.width / 2, 30);
     this.ctx.font = "30px sans-serif";
+    this.ctx.textAlign = "center";
     this.ctx.fillStyle = "white";
-    this.textAlign = "center";
-    this.ctx.fillText(`Score: 0`, (this.width - 80) / 2, 30);
+    this.ctx.fillText(`Score: 0`, this.width / 2, 60);
   }
 
   update() {
     this.ctx.fillStyle = "white";
-    this.ctx.fillText(`Score: ${this.score}`, (this.width - 80) / 2, 30);
+    this.ctx.textAlign = "center";
+    this.ctx.fillText(`Score: ${this.score}`, this.width / 2, 60);
   }
 }

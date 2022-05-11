@@ -9,6 +9,7 @@ export default class Player {
     this.speed = 6;
     this.bulletWidth = 3;
     this.bulletHeight = 20;
+    this.cash = 0;
     this.cornerNodes = [];
 
     document.addEventListener("keydown", this.keyDownHandler);
