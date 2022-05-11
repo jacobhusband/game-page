@@ -6,7 +6,7 @@ import Score from "./Score.js";
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
-let value;
+let isPaused = false;
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -40,7 +40,9 @@ function gameLoop() {
     ctx,
     enemyController.enemies,
     player,
-    score
+    score,
+    collisionDetector,
+    enemyController
   );
 }
 
@@ -52,10 +54,8 @@ function setCommonStyle() {
 }
 
 // setInterval(gameLoop, 1000 / 60);
-
 const gameInterval = setInterval(() => {
-  gameLoop();
-  if (collisionDetector.value > 0) {
-    clearInterval(gameInterval);
+  if (collisionDetector.value == 0) {
+    gameLoop();
   }
 }, 1000 / 60);

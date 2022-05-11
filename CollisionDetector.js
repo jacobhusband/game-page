@@ -25,13 +25,26 @@ export default class CollisionDetector {
     });
   }
 
-  detectPlayerHit(ctx, enemies, player, score, cash) {
+  detectPlayerHit(
+    ctx,
+    enemies,
+    player,
+    score,
+    collisiondetection,
+    enemyController
+  ) {
     let [center, radius] = this.calcPlayerHitBox(player.cornerNodes);
     enemies.forEach((enemy) => {
       let d = this.calcDistance(enemy.x, center[0], enemy.y, center[1]);
       if (d <= radius + enemy.radius) {
         player.cash += score.score;
-        new EndGame(this.canvas, player, score);
+        new EndGame(
+          this.canvas,
+          player,
+          score,
+          collisiondetection,
+          enemyController
+        );
         console.log(`cash amount: ${player.cash}`);
         this.value += 1;
       }

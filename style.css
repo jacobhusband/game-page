@@ -32,6 +32,7 @@ body {
   font-size: 900;
   font-weight: bold;
   border: none;
+  z-index: 2;
 }
 
 .top-body {

@@ -4,7 +4,7 @@ export default class Enemy {
     this.y = y;
     this.speed = speed;
     this.radius = radius;
-    this.color = 'white';
+    this.color = "white";
     this.hp = radius;
   }
 
@@ -12,18 +12,18 @@ export default class Enemy {
     let [ux, uy] = this.calcDirection(playerX, playerY);
     this.move(ux, uy);
     ctx.beginPath();
-    ctx.moveTo(this.x, this.y)
-    ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
+    ctx.moveTo(this.x, this.y);
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     ctx.fillStyle = this.color;
-    ctx.fill()
+    ctx.fill();
   }
 
   calcDirection(pX, pY) {
     const xDir = pX - this.x;
     const yDir = pY - this.y;
-    const magnitude = (xDir**2 + yDir**2)**(1/2);
-    const ux = xDir/magnitude;
-    const uy = yDir/magnitude;
+    const magnitude = (xDir ** 2 + yDir ** 2) ** (1 / 2);
+    const ux = xDir / magnitude;
+    const uy = yDir / magnitude;
     return [ux, uy];
   }
 

@@ -12,9 +12,9 @@ export default class Score {
     this.ctx.fillText(`Score: 0`, this.width / 2, 60);
   }
 
-  update() {
+  update(score = this.score) {
     this.ctx.fillStyle = "white";
     this.ctx.textAlign = "center";
-    this.ctx.fillText(`Score: ${this.score}`, this.width / 2, 60);
+    this.ctx.fillText(`Score: ${score}`, this.width / 2, 60);
   }
 }
