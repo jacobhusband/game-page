@@ -6,15 +6,19 @@ export default class EnemyController {
 
   constructor(canvas) {
     this.canvas = canvas;
+    this.speedAmt = 2;
+    this.maxRadius = 40;
+    this.minRadius = 5;
+    this.enemySpawnRate = 300;
   }
 
   spawn() {
     if (this.timerTillNextEnemy <= 0) {
       let [x, y] = this.calcSpawnLocation();
       console.log(`spawn location x: ${x} y: ${y}`);
-      let speed = this.calcSpeed(4);
-      let radius = this.calcRadius(100, 10);
-      let delay = 300;
+      let speed = this.calcSpeed(this.speedAmt);
+      let radius = this.calcRadius(this.maxRadius, this.minRadius);
+      let delay = this.enemySpawnRate;
       this.enemies.push(new Enemy(x, y, speed, radius));
       this.timerTillNextEnemy = delay;
     }

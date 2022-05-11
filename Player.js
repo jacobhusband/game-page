@@ -11,6 +11,11 @@ export default class Player {
     this.bulletHeight = 20;
     this.cash = 0;
     this.cornerNodes = [];
+    this.bulletSpeed = 4;
+    this.damage = 3;
+    this.delay = 10;
+    this.highscore = 0;
+    this.roundScore = 0;
 
     document.addEventListener("keydown", this.keyDownHandler);
     document.addEventListener("keyup", this.keyUpHandler);
@@ -87,9 +92,6 @@ export default class Player {
 
   shoot() {
     if (this.shootPressed) {
-      const speed = 8;
-      const delay = 7;
-      const damage = 5;
       let bulletX,
         bulletY = 0;
       let width = this.bulletWidth;
@@ -125,9 +127,9 @@ export default class Player {
       this.bulletController.shoot(
         bulletX,
         bulletY,
-        speed,
-        damage,
-        delay,
+        this.bulletSpeed,
+        this.damage,
+        this.delay,
         this.degree,
         width,
         height

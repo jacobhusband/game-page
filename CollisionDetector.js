@@ -31,7 +31,7 @@ export default class CollisionDetector {
       let d = this.calcDistance(enemy.x, center[0], enemy.y, center[1]);
       if (d <= radius + enemy.radius) {
         player.cash += score.score;
-        new EndGame(this.canvas, enemies, score);
+        new EndGame(this.canvas, player, score);
         console.log(`cash amount: ${player.cash}`);
         this.value += 1;
       }
