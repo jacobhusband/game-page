@@ -15,8 +15,6 @@ export default class EnemyController {
   spawn() {
     if (this.timerTillNextEnemy <= 0) {
       let [x, y] = this.calcSpawnLocation();
-      console.log(`spawn location x: ${x} y: ${y}`);
-      console.log(`spawn rate: ${this.enemySpawnRate}`);
       let speed = this.calcSpeed(this.speedAmt);
       let radius = this.calcRadius(this.maxRadius, this.minRadius);
       this.enemySpawnRate = Math.ceil(this.enemySpawnRate * 0.97);
@@ -32,28 +30,23 @@ export default class EnemyController {
     const h = window.innerHeight;
     const w = window.innerWidth;
     let randomNum = this.calcRandomNum(4);
-    console.log(`Random number: ${randomNum}`);
     let x = 0;
     let y = 0;
 
     switch (randomNum) {
       case 1:
-        console.log(`case 1`);
         x = this.calcRandomNum(-20, -50);
         y = this.calcRandomNum(-50, h + 50);
         break;
       case 2:
-        console.log(`case 2`);
         x = this.calcRandomNum(w + 20, w + 50);
         y = this.calcRandomNum(-50, h + 50);
         break;
       case 3:
-        console.log(`case 3`);
         x = this.calcRandomNum(-50, w + 50);
         y = this.calcRandomNum(-20, -50);
         break;
       case 4:
-        console.log(`case 4`);
         x = this.calcRandomNum(-50, w + 50);
         y = this.calcRandomNum(h + 20, h + 50);
         break;

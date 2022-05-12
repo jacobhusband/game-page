@@ -10,7 +10,18 @@ export default class Bullet {
     this.color = "red";
     this.cornerNodes = [];
     this.hp = 1;
-    this.heatSeek = false;
+    this.heatSeek = true;
+    this.directionFound = false;
+    this.speeds = [
+      [0, -this.speed],
+      [this.speed, -this.speed],
+      [this.speed, 0],
+      [this.speed, this.speed],
+      [0, this.speed],
+      [-this.speed, this.speed],
+      [-this.speed, 0],
+      [-this.speed, -this.speed],
+    ];
   }
 
   draw(ctx) {
@@ -24,16 +35,6 @@ export default class Bullet {
     let degrees = [];
 
     degrees = [0, 45, 90, 135, 180, 225, 270, 315];
-    speeds = [
-      [0, -this.speed],
-      [this.speed, -this.speed],
-      [this.speed, 0],
-      [this.speed, this.speed],
-      [0, this.speed],
-      [-this.speed, this.speed],
-      [-this.speed, 0],
-      [-this.speed, -this.speed],
-    ];
     cornerPoints = [
       [
         [this.x, this.y - long],
@@ -97,38 +98,34 @@ export default class Bullet {
       ],
     ];
 
-    for (let i = 0; i < degrees.length; i++) {
-      // Find bullet angle
-      if (degrees[i] == this.degree) {
-        // Save relevant corner points
-        this.cornerNodes = [
-          [cornerPoints[i][0][0], cornerPoints[i][0][1]],
-          [cornerPoints[i][1][0], cornerPoints[i][1][1]],
-          [cornerPoints[i][2][0], cornerPoints[i][2][1]],
-          [cornerPoints[i][3][0], cornerPoints[i][3][1]],
-        ];
-        // Draw bullet
-        this.drawBullet(
-          ctx,
-          this.cornerNodes[0][0],
-          this.cornerNodes[0][1],
-          this.cornerNodes[1][0],
-          this.cornerNodes[1][1],
-          this.cornerNodes[2][0],
-          this.cornerNodes[2][1],
-          this.cornerNodes[3][0],
-          this.cornerNodes[3][1]
-        );
-        // Move bullet
-        this.moveBullet(speeds, i);
-        // Add bullet hit points
-        this.cornerNodes = this.combineLists(
-          this.cornerNodes,
-          this.createMidpointsFromNodes(this.cornerNodes)
-        );
-        i = degrees.length;
-      }
-    }
+    // Find index where angle of bullet matches rectangle corner node positions
+    let i = degrees.indexOf(this.degree);
+    // Save relevant corner points
+    this.cornerNodes = [
+      [cornerPoints[i][0][0], cornerPoints[i][0][1]],
+      [cornerPoints[i][1][0], cornerPoints[i][1][1]],
+      [cornerPoints[i][2][0], cornerPoints[i][2][1]],
+      [cornerPoints[i][3][0], cornerPoints[i][3][1]],
+    ];
+    // Draw bullet
+    this.drawBullet(
+      ctx,
+      this.cornerNodes[0][0],
+      this.cornerNodes[0][1],
+      this.cornerNodes[1][0],
+      this.cornerNodes[1][1],
+      this.cornerNodes[2][0],
+      this.cornerNodes[2][1],
+      this.cornerNodes[3][0],
+      this.cornerNodes[3][1]
+    );
+    // Move bullet
+    this.moveBullet(this.speeds[i], ctx, i);
+    // Add bullet hit points
+    this.cornerNodes = this.combineLists(
+      this.cornerNodes,
+      this.createMidpointsFromNodes(this.cornerNodes)
+    );
   }
 
   calcMidPoint(xNode1, xNode2, yNode1, yNode2) {
@@ -147,9 +144,34 @@ export default class Bullet {
     ctx.fill();
   }
 
-  moveBullet(speeds, i) {
-    this.x += speeds[i][0];
-    this.y += speeds[i][1];
+  moveBullet(displacement, ctx, i) {
+    if (!this.heatSeek) {
+      this.x += displacement[0];
+      this.y += displacement[1];
+    } else if (this.heatSeek == true && this.directionFound == false) {
+      let radius = 300;
+      let step = 10;
+      let point;
+      let unitvec;
+      let points = this.getPointsAroundLocation(radius, step);
+      point = this.findColor(ctx, points, 255, 255, 255);
+      if (point !== undefined) {
+        unitvec = this.calcDirection(point[0], point[1]);
+        console.log(`point: ${point}`);
+        this.speeds[i][0] = unitvec[0] * this.speed;
+        this.speeds[i][1] = unitvec[1] * this.speed;
+        this.x += displacement[0];
+        this.y += displacement[1];
+        this.directionFound = true;
+      } else {
+        this.x += displacement[0];
+        this.y += displacement[1];
+      }
+    } else {
+      console.log();
+      this.x += displacement[0];
+      this.y += displacement[1];
+    }
   }
 
   // Points are lists like: points = [p1, p2, p3] with p* = [x*, y*]
@@ -183,5 +205,44 @@ export default class Bullet {
 
   combineLists(listBegin, listEnd) {
     return listBegin.concat(listEnd);
+  }
+
+  toRadians(angle) {
+    return angle * (Math.PI / 180);
+  }
+
+  getPointsAroundLocation(radius, step) {
+    let points = [];
+    let x, y;
+    for (let i = 0; i <= 360; i += step) {
+      x = radius * Math.cos(this.toRadians(i));
+      y = radius * Math.sin(this.toRadians(i));
+      x += this.x;
+      y += this.y;
+      points.push([x, y]);
+    }
+    return points;
+  }
+
+  findColor(ctx, points, r, g, b) {
+    let pixel;
+    for (let i = 0; i < points.length; i++) {
+      pixel = ctx.getImageData(points[i][0], points[i][1], 1, 1).data;
+      if (pixel[0] >= r - 10 && pixel[1] >= g - 10 && pixel[2] >= b - 10) {
+        // console.log(`pixel: ${pixel}, item 1: ${item[0]}, item 2: ${item[1]}`);
+        return [points[i][0], points[i][1]];
+      } else {
+        return undefined;
+      }
+    }
+  }
+
+  calcDirection(pX, pY) {
+    const xDir = pX - this.x;
+    const yDir = pY - this.y;
+    const magnitude = (xDir ** 2 + yDir ** 2) ** (1 / 2);
+    const ux = xDir / magnitude;
+    const uy = yDir / magnitude;
+    return [ux, uy];
   }
 }
