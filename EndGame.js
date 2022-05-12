@@ -32,6 +32,11 @@ export default class EndGame {
     const bulletWidth = document.getElementById("bullet-width");
     const bulletWidthCost = document.getElementById("bullet-width-cost");
 
+    const increaseFireRate = document.getElementById("increaseBulletFireRate");
+    const decreaseFireRate = document.getElementById("decreaseBulletFireRate");
+    const fireRate = document.getElementById("bullet-firerate");
+    const fireRateCost = document.getElementById("bullet-firerate-cost");
+
     this.canvas = canvas;
     this.score = score;
     this.player = player;
@@ -46,7 +51,9 @@ export default class EndGame {
       bulletDamageCost,
       bulletDamage,
       bulletWidthCost,
-      bulletWidth
+      bulletWidth,
+      fireRateCost,
+      fireRate
     );
     this.showModal(modal);
     this.resetPlayerPosition();
@@ -97,6 +104,19 @@ export default class EndGame {
       }
     };
 
+    increaseFireRate.onclick = function () {
+      if (player.cash >= player.fireRateCurrentCost) {
+        player.fireRate -= 1;
+        player.cash -= player.fireRateCurrentCost;
+        player.fireRateCurrentCost =
+          player.fireRateCurrentCost * (player.fireRateCount + 1);
+        fireRateCost.innerHTML = `COST: ${player.fireRateCurrentCost}`;
+        fireRate.innerHTML = `${10 - player.fireRate}`;
+        highscore.innerHTML = `${player.highscore}`;
+        playerCash.innerHTML = `$${player.cash}`;
+      }
+    };
+
     increaseBulletWidth.onclick = function () {
       if (player.cash >= player.bulletWidthCurrentCost) {
         player.bulletWidth += 1;
@@ -126,7 +146,9 @@ export default class EndGame {
     bulletDamageCost,
     bulletDamage,
     bulletWidthCost,
-    bulletWidth
+    bulletWidth,
+    fireRateCost,
+    fireRate
   ) {
     if (this.player.highscore < this.score.score) {
       this.player.highscore = this.score.score;
@@ -137,6 +159,8 @@ export default class EndGame {
     bulletDamage.innerHTML = `${this.player.bulletDamage}`;
     bulletWidthCost.innerHTML = `COST: ${this.player.bulletWidthCurrentCost}`;
     bulletWidth.innerHTML = `${this.player.bulletWidth}`;
+    fireRateCost.innerHTML = `COST: ${this.player.fireRateCurrentCost}`;
+    fireRate.innerHTML = `${10 - this.player.fireRate}`;
     highscore.innerHTML = `${this.player.highscore}`;
     scoremodal.innerHTML = `${this.score.score}`;
     playerCash.innerHTML = `$${this.player.cash}`;

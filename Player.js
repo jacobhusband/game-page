@@ -25,9 +25,11 @@ export default class Player {
     this.bulletSpeedCurrentCost = 100;
     this.bulletDamageCurrentCost = 100;
     this.bulletWidthCurrentCost = 300;
+    this.fireRateCurrentCost = 200;
     this.bulletSpeedCount = 1;
     this.bulletDamageCount = 1;
     this.bulletWidthCount = 1;
+    this.fireRateCount = 1;
 
     // Bullet position, angle, hit box points
     this.bulletController = bulletController;

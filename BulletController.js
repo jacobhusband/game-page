@@ -26,11 +26,10 @@ export default class BulletController {
       }
       if (bullet.hp <= 0) {
         const index = this.bullets.indexOf(bullet);
-        this.bullets.splice(index, 1)
+        this.bullets.splice(index, 1);
       }
       bullet.draw(ctx);
     });
-
   }
 
   isBulletOffScreen(bullet) {
