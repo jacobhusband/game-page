@@ -1,25 +1,38 @@
 export default class Player {
   constructor(x, y, bulletController) {
+    // Player position
     this.x = x;
     this.y = y;
-    this.bulletController = bulletController;
-    this.degree = 0;
+
+    // Player scores
+    this.highscore = 0;
+    this.roundScore = 0;
+
+    // Player character attributes
     this.width = 25;
     this.height = 25;
     this.playerSpeed = 6;
+    this.cash = 0;
+
+    // Player weapon attributes
     this.bulletWidth = 2;
     this.bulletHeight = 5;
-    this.cash = 0;
-    this.cornerNodes = [];
     this.bulletSpeed = 4;
     this.bulletDamage = 3;
-    this.delay = 10;
-    this.highscore = 0;
-    this.roundScore = 0;
+    this.fireRate = 10;
+
+    // Player upgrade costs and counts
     this.bulletSpeedCurrentCost = 100;
     this.bulletDamageCurrentCost = 100;
+    this.bulletWidthCurrentCost = 300;
     this.bulletSpeedCount = 1;
     this.bulletDamageCount = 1;
+    this.bulletWidthCount = 1;
+
+    // Bullet position, angle, hit box points
+    this.bulletController = bulletController;
+    this.cornerNodes = [];
+    this.degree = 0;
 
     document.addEventListener("keydown", this.keyDownHandler);
     document.addEventListener("keyup", this.keyUpHandler);
@@ -133,7 +146,7 @@ export default class Player {
         bulletY,
         this.bulletSpeed,
         this.bulletDamage,
-        this.delay,
+        this.fireRate,
         this.degree,
         width,
         height

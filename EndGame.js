@@ -27,6 +27,11 @@ export default class EndGame {
     const bulletDamage = document.getElementById("bullet-damage");
     const bulletDamageCost = document.getElementById("bullet-damage-cost");
 
+    const increaseBulletWidth = document.getElementById("increaseBulletWidth");
+    const decreaseBulletWidth = document.getElementById("decreaseBulletWidth");
+    const bulletWidth = document.getElementById("bullet-width");
+    const bulletWidthCost = document.getElementById("bullet-width-cost");
+
     this.canvas = canvas;
     this.score = score;
     this.player = player;
@@ -39,7 +44,9 @@ export default class EndGame {
       bulletSpeedCost,
       bulletSpeed,
       bulletDamageCost,
-      bulletDamage
+      bulletDamage,
+      bulletWidthCost,
+      bulletWidth
     );
     this.showModal(modal);
     this.resetPlayerPosition();
@@ -89,6 +96,19 @@ export default class EndGame {
         playerCash.innerHTML = `$${player.cash}`;
       }
     };
+
+    increaseBulletWidth.onclick = function () {
+      if (player.cash >= player.bulletWidthCurrentCost) {
+        player.bulletWidth += 1;
+        player.cash -= player.bulletWidthCurrentCost;
+        player.bulletWidthCurrentCost =
+          player.bulletWidthCurrentCost * (player.bulletWidthCount + 1);
+        bulletWidthCost.innerHTML = `COST: ${player.bulletWidthCurrentCost}`;
+        bulletWidth.innerHTML = `${player.bulletWidth}`;
+        highscore.innerHTML = `${player.highscore}`;
+        playerCash.innerHTML = `$${player.cash}`;
+      }
+    };
   }
 
   showModal(modal) {
@@ -104,7 +124,9 @@ export default class EndGame {
     bulletSpeedCost,
     bulletSpeed,
     bulletDamageCost,
-    bulletDamage
+    bulletDamage,
+    bulletWidthCost,
+    bulletWidth
   ) {
     if (this.player.highscore < this.score.score) {
       this.player.highscore = this.score.score;
@@ -113,6 +135,8 @@ export default class EndGame {
     bulletSpeed.innerHTML = `${this.player.bulletSpeed}`;
     bulletDamageCost.innerHTML = `COST: ${this.player.bulletDamageCurrentCost}`;
     bulletDamage.innerHTML = `${this.player.bulletDamage}`;
+    bulletWidthCost.innerHTML = `COST: ${this.player.bulletWidthCurrentCost}`;
+    bulletWidth.innerHTML = `${this.player.bulletWidth}`;
     highscore.innerHTML = `${this.player.highscore}`;
     scoremodal.innerHTML = `${this.score.score}`;
     playerCash.innerHTML = `$${this.player.cash}`;
