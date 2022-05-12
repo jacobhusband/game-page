@@ -18,6 +18,15 @@ export default class EndGame {
     const bulletSpeed = document.getElementById("bullet-speed");
     const bulletSpeedCost = document.getElementById("bullet-speed-cost");
 
+    const increaseBulletDamage = document.getElementById(
+      "increaseBulletDamage"
+    );
+    const decreaseBulletDamage = document.getElementById(
+      "decreaseBulletDamage"
+    );
+    const bulletDamage = document.getElementById("bullet-damage");
+    const bulletDamageCost = document.getElementById("bullet-damage-cost");
+
     this.canvas = canvas;
     this.score = score;
     this.player = player;
@@ -28,7 +37,9 @@ export default class EndGame {
       scoremodal,
       playerCash,
       bulletSpeedCost,
-      bulletSpeed
+      bulletSpeed,
+      bulletDamageCost,
+      bulletDamage
     );
     this.showModal(modal);
     this.resetPlayerPosition();
@@ -55,13 +66,25 @@ export default class EndGame {
 
     increaseBulletSpeed.onclick = function () {
       if (player.cash >= player.bulletSpeedCurrentCost) {
-        console.log(`Got in here. Bullet speed: ${bulletSpeed}`);
         player.bulletSpeed += 1;
         player.cash -= player.bulletSpeedCurrentCost;
         player.bulletSpeedCurrentCost =
           player.bulletSpeedCurrentCost * (player.bulletSpeedCount + 1);
         bulletSpeedCost.innerHTML = `COST: ${player.bulletSpeedCurrentCost}`;
         bulletSpeed.innerHTML = `${player.bulletSpeed}`;
+        highscore.innerHTML = `${player.highscore}`;
+        playerCash.innerHTML = `$${player.cash}`;
+      }
+    };
+
+    increaseBulletDamage.onclick = function () {
+      if (player.cash >= player.bulletDamageCurrentCost) {
+        player.bulletDamage += 1;
+        player.cash -= player.bulletDamageCurrentCost;
+        player.bulletDamageCurrentCost =
+          player.bulletDamageCurrentCost * (player.bulletDamageCount + 1);
+        bulletDamageCost.innerHTML = `COST: ${player.bulletDamageCurrentCost}`;
+        bulletDamage.innerHTML = `${player.bulletDamage}`;
         highscore.innerHTML = `${player.highscore}`;
         playerCash.innerHTML = `$${player.cash}`;
       }
@@ -74,12 +97,22 @@ export default class EndGame {
     modal.style.alignContent = "center";
   }
 
-  updateModal(highscore, scoremodal, playerCash, bulletSpeedCost, bulletSpeed) {
+  updateModal(
+    highscore,
+    scoremodal,
+    playerCash,
+    bulletSpeedCost,
+    bulletSpeed,
+    bulletDamageCost,
+    bulletDamage
+  ) {
     if (this.player.highscore < this.score.score) {
       this.player.highscore = this.score.score;
     }
     bulletSpeedCost.innerHTML = `COST: ${this.player.bulletSpeedCurrentCost}`;
     bulletSpeed.innerHTML = `${this.player.bulletSpeed}`;
+    bulletDamageCost.innerHTML = `COST: ${this.player.bulletDamageCurrentCost}`;
+    bulletDamage.innerHTML = `${this.player.bulletDamage}`;
     highscore.innerHTML = `${this.player.highscore}`;
     scoremodal.innerHTML = `${this.score.score}`;
     playerCash.innerHTML = `$${this.player.cash}`;
@@ -95,6 +128,6 @@ export default class EndGame {
   }
 
   resetEnemySpawnRate() {
-    this.enemyController.enemySpawnRate = 300;
+    this.enemyController.enemySpawnRate = 100;
   }
 }

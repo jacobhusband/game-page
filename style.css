@@ -169,7 +169,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 0.5em;
   margin: 1em 2em;
+  flex-wrap: wrap;
 }
 
 .modal-footer {

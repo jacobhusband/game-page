@@ -9,7 +9,7 @@ export default class EnemyController {
     this.speedAmt = 2;
     this.maxRadius = 40;
     this.minRadius = 5;
-    this.enemySpawnRate = 300;
+    this.enemySpawnRate = 100;
   }
 
   spawn() {
@@ -19,7 +19,7 @@ export default class EnemyController {
       console.log(`spawn rate: ${this.enemySpawnRate}`);
       let speed = this.calcSpeed(this.speedAmt);
       let radius = this.calcRadius(this.maxRadius, this.minRadius);
-      this.enemySpawnRate = Math.ceil(this.enemySpawnRate * 0.95);
+      this.enemySpawnRate = Math.ceil(this.enemySpawnRate * 0.99);
       let delay = this.enemySpawnRate;
       this.enemies.push(new Enemy(x, y, speed, radius));
       this.timerTillNextEnemy = delay;

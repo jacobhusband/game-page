@@ -21,6 +21,7 @@ export default class Bullet {
     let speeds = [];
     let cornerPoints = [];
     let degrees = [];
+    let midPoints = [];
 
     degrees = [0, 45, 90, 135, 180, 225, 270, 315];
     speeds = [
@@ -97,6 +98,7 @@ export default class Bullet {
     ];
 
     for (let i = 0; i < degrees.length; i++) {
+      let midPointSet = [];
       if (degrees[i] == this.degree) {
         ctx.beginPath();
         ctx.moveTo(cornerPoints[i][0][0], cornerPoints[i][0][1]);
@@ -113,8 +115,38 @@ export default class Bullet {
           [cornerPoints[i][2][0], cornerPoints[i][2][1]],
           [cornerPoints[i][3][0], cornerPoints[i][3][1]],
         ];
+        for (let j = -1; j < this.cornerNodes.length - 1; j++) {
+          if (j == -1) {
+            midPointSet.push([
+              this.calcMidPoint(
+                cornerPoints[i][this.cornerNodes.length - 1][0],
+                cornerPoints[i][0][0],
+                cornerPoints[i][this.cornerNodes.length - 1][1],
+                cornerPoints[i][0][1]
+              ),
+            ]);
+          } else {
+            midPointSet.push([
+              this.calcMidPoint(
+                cornerPoints[i][j][0],
+                cornerPoints[i][j + 1][0],
+                cornerPoints[i][j][1],
+                cornerPoints[i][j + 1][1]
+              ),
+            ]);
+          }
+        }
+        midPointSet.forEach((point) => {
+          this.cornerNodes.push(point);
+        });
         i = degrees.length;
       }
     }
+  }
+
+  calcMidPoint(xNode1, xNode2, yNode1, yNode2) {
+    let xNode = (xNode1 + xNode2) / 2;
+    let yNode = (yNode1 + yNode2) / 2;
+    return [xNode, yNode];
   }
 }

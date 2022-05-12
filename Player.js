@@ -6,18 +6,20 @@ export default class Player {
     this.degree = 0;
     this.width = 25;
     this.height = 25;
-    this.speed = 6;
-    this.bulletWidth = 3;
-    this.bulletHeight = 20;
+    this.playerSpeed = 6;
+    this.bulletWidth = 2;
+    this.bulletHeight = 5;
     this.cash = 0;
     this.cornerNodes = [];
     this.bulletSpeed = 4;
-    this.damage = 3;
+    this.bulletDamage = 3;
     this.delay = 10;
     this.highscore = 0;
     this.roundScore = 0;
     this.bulletSpeedCurrentCost = 100;
+    this.bulletDamageCurrentCost = 100;
     this.bulletSpeedCount = 1;
+    this.bulletDamageCount = 1;
 
     document.addEventListener("keydown", this.keyDownHandler);
     document.addEventListener("keyup", this.keyUpHandler);
@@ -130,7 +132,7 @@ export default class Player {
         bulletX,
         bulletY,
         this.bulletSpeed,
-        this.damage,
+        this.bulletDamage,
         this.delay,
         this.degree,
         width,
@@ -141,38 +143,38 @@ export default class Player {
 
   move() {
     if (this.rightPressed == true && this.upPressed == true) {
-      this.x += this.speed;
-      this.y -= this.speed;
+      this.x += this.playerSpeed;
+      this.y -= this.playerSpeed;
       this.degree = 45;
     } else if (this.rightPressed == true && this.downPressed == true) {
-      this.x += this.speed;
-      this.y += this.speed;
+      this.x += this.playerSpeed;
+      this.y += this.playerSpeed;
       this.degree = 135;
     } else if (this.leftPressed == true && this.upPressed == true) {
-      this.x -= this.speed;
-      this.y -= this.speed;
+      this.x -= this.playerSpeed;
+      this.y -= this.playerSpeed;
       this.degree = 315;
     } else if (this.leftPressed == true && this.downPressed == true) {
-      this.x -= this.speed;
-      this.y += this.speed;
+      this.x -= this.playerSpeed;
+      this.y += this.playerSpeed;
       this.degree = 225;
     } else if (this.leftPressed == true && this.rightPressed == true) {
-      this.x += this.speed;
+      this.x += this.playerSpeed;
       this.degree = 0;
     } else if (this.upPressed == true && this.downPressed == true) {
-      this.y -= this.speed;
+      this.y -= this.playerSpeed;
       this.degree = 0;
     } else if (this.rightPressed == true) {
-      this.x += this.speed;
+      this.x += this.playerSpeed;
       this.degree = 90;
     } else if (this.leftPressed == true) {
-      this.x -= this.speed;
+      this.x -= this.playerSpeed;
       this.degree = 270;
     } else if (this.upPressed == true) {
-      this.y -= this.speed;
+      this.y -= this.playerSpeed;
       this.degree = 0;
     } else if (this.downPressed == true) {
-      this.y += this.speed;
+      this.y += this.playerSpeed;
       this.degree = 180;
     }
   }
