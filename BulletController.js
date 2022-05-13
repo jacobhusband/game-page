@@ -9,7 +9,18 @@ export default class BulletController {
     this.enemyController = enemyController;
   }
 
-  shoot(x, y, speed, damage, delay, degree, width, height, heatSeek) {
+  shoot(
+    x,
+    y,
+    speed,
+    damage,
+    delay,
+    degree,
+    width,
+    height,
+    heatSeek,
+    heatSeekRange
+  ) {
     if (this.timerTillNextBullet <= 0) {
       this.bullets.push(
         new Bullet(
@@ -21,7 +32,8 @@ export default class BulletController {
           width,
           height,
           this.enemyController,
-          heatSeek
+          heatSeek,
+          heatSeekRange
         )
       );
       this.timerTillNextBullet = delay;

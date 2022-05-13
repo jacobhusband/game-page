@@ -27,11 +27,13 @@ export default class Player {
     this.bulletDamageCurrentCost = 100;
     this.bulletWidthCurrentCost = 300;
     this.fireRateCurrentCost = 200;
-    this.heatSeekCost = 2500;
+    this.heatSeekCost = [500, 1000, 1500, 2000, 0];
+    this.heatSeekRange = 25;
     this.bulletSpeedCount = 1;
     this.bulletDamageCount = 1;
     this.bulletWidthCount = 1;
     this.fireRateCount = 1;
+    this.heatSeekCount = 0;
     this.heatSeekText = "OFF";
 
     // Bullet position, angle, hit box points
@@ -155,7 +157,8 @@ export default class Player {
         this.degree,
         width,
         height,
-        this.heatSeek
+        this.heatSeek,
+        this.heatSeekRange
       );
     }
   }

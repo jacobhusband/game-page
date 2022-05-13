@@ -16,6 +16,8 @@ export default class EnemyController {
     if (this.timerTillNextEnemy <= 0) {
       let [x, y] = this.calcSpawnLocation();
       let speed = this.calcSpeed(this.speedAmt);
+      this.maxRadius += 0.5;
+      this.minRadius += 0.5;
       let radius = this.calcRadius(this.maxRadius, this.minRadius);
       this.enemySpawnRate = Math.ceil(this.enemySpawnRate * 0.97);
       let delay = this.enemySpawnRate;

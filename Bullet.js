@@ -8,7 +8,8 @@ export default class Bullet {
     width,
     height,
     enemyController,
-    heatSeek
+    heatSeek,
+    heatSeekRange
   ) {
     this.x = x;
     this.y = y;
@@ -23,6 +24,7 @@ export default class Bullet {
     this.differenceX = 0;
     this.hp = 1;
     this.heatSeek = heatSeek;
+    this.heatSeekRange = heatSeekRange;
     this.foundTarget = false;
     this.speeds = [
       [0, -this.speed],
@@ -160,10 +162,10 @@ export default class Bullet {
       if (this.foundTarget === false) {
         for (let i = 0; i < this.enemyController.enemies.length; i++) {
           if (
-            this.x - 100 < this.enemyController.enemies[i].x &&
-            this.x + 100 > this.enemyController.enemies[i].x &&
-            this.y - 100 < this.enemyController.enemies[i].y &&
-            this.y + 100 > this.enemyController.enemies[i].y
+            this.x - this.heatSeekRange < this.enemyController.enemies[i].x &&
+            this.x + this.heatSeekRange > this.enemyController.enemies[i].x &&
+            this.y - this.heatSeekRange < this.enemyController.enemies[i].y &&
+            this.y + this.heatSeekRange > this.enemyController.enemies[i].y
           ) {
             this.foundTarget = true;
             this.enemy = this.enemyController.enemies[i];

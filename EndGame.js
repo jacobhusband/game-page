@@ -38,7 +38,7 @@ export default class EndGame {
     const fireRateCost = document.getElementById("bullet-firerate-cost");
 
     const turnOnHeatSeek = document.getElementById("turnOnHeatSeek");
-    const turnOff = document.getElementById("turnOffHeatSeek");
+    const turnOffHeatSeek = document.getElementById("turnOffHeatSeek");
     const heatSeekText = document.getElementById("heat-seek");
     const heatSeekCost = document.getElementById("heat-seek-cost");
 
@@ -46,6 +46,8 @@ export default class EndGame {
     this.score = score;
     this.player = player;
     this.enemyController = enemyController;
+    this.enemyController.maxRadius = 40;
+    this.enemyController.minRadius = 5;
     this.bulletController = bulletController;
     this.updateModal(
       highscore,
@@ -86,12 +88,70 @@ export default class EndGame {
     };
 
     turnOnHeatSeek.onclick = function () {
-      if (player.cash >= player.heatSeekCost && player.heatSeek === false) {
+      if (
+        player.cash >= player.heatSeekCost[player.heatSeekCount] &&
+        player.heatSeek === false
+      ) {
         player.heatSeek = true;
-        player.cash -= player.heatSeekCost;
-        player.heatSeekText = "ON";
+        player.cash -= player.heatSeekCost[player.heatSeekCount];
+        player.heatSeekCount += 1;
+        player.heatSeekText = `ON: ${player.heatSeekCount}`;
         heatSeekText.innerHTML = `${player.heatSeekText}`;
-        highscore.innerHTML = `${player.highscore}`;
+        heatSeekCost.innerHTML = `COST: $${
+          player.heatSeekCost[player.heatSeekCount]
+        }`;
+        playerCash.innerHTML = `$${player.cash}`;
+      } else if (
+        player.cash >= player.heatSeekCost[player.heatSeekCount] &&
+        player.heatSeekCount < 3
+      ) {
+        player.cash -= player.heatSeekCost[player.heatSeekCount];
+        player.heatSeekRange += 25;
+        player.heatSeekCount += 1;
+        player.heatSeekText = `ON: ${player.heatSeekCount}`;
+        heatSeekText.innerHTML = `${player.heatSeekText}`;
+        heatSeekCost.innerHTML = `COST: $${
+          player.heatSeekCost[player.heatSeekCount]
+        }`;
+        playerCash.innerHTML = `$${player.cash}`;
+      } else if (
+        player.cash >= player.heatSeekCost[player.heatSeekCount] &&
+        player.heatSeekCount === 3
+      ) {
+        player.cash -= player.heatSeekCost[player.heatSeekCount];
+        player.heatSeekRange += 25;
+        player.heatSeekCount += 1;
+        player.heatSeekText = `MAX: ${player.heatSeekCount}`;
+        heatSeekText.innerHTML = `${player.heatSeekText}`;
+        heatSeekCost.innerHTML = `COST: $${
+          player.heatSeekCost[player.heatSeekCount]
+        }`;
+        playerCash.innerHTML = `$${player.cash}`;
+      }
+    };
+
+    turnOffHeatSeek.onclick = function () {
+      if (
+        player.heatSeekCount <= 4 &&
+        player.heatSeek === true &&
+        player.heatSeekCount >= 2
+      ) {
+        player.heatSeekCount -= 1;
+        player.cash += player.heatSeekCost[player.heatSeekCount];
+        player.heatSeekText = `ON: ${player.heatSeekCount}`;
+        heatSeekText.innerHTML = `${player.heatSeekText}`;
+        heatSeekCost.innerHTML = `COST: $${
+          player.heatSeekCost[player.heatSeekCount]
+        }`;
+        playerCash.innerHTML = `$${player.cash}`;
+      } else if (player.heatSeekCount === 1) {
+        player.heatSeekCount -= 1;
+        player.cash += player.heatSeekCost[player.heatSeekCount];
+        player.heatSeekText = `OFF`;
+        heatSeekText.innerHTML = `${player.heatSeekText}`;
+        heatSeekCost.innerHTML = `COST: $${
+          player.heatSeekCost[player.heatSeekCount]
+        }`;
         playerCash.innerHTML = `$${player.cash}`;
       }
     };
@@ -102,8 +162,20 @@ export default class EndGame {
         player.cash -= player.bulletSpeedCurrentCost;
         player.bulletSpeedCurrentCost =
           player.bulletSpeedCurrentCost * (player.bulletSpeedCount + 1);
-        bulletSpeed.innerHTML = `${player.bulletSpeed}`;
-        highscore.innerHTML = `${player.highscore}`;
+        bulletSpeedCost.innerHTML = `COST: $${player.bulletSpeedCurrentCost}`;
+        bulletSpeed.innerHTML = `${player.bulletSpeed - 4}`;
+        playerCash.innerHTML = `$${player.cash}`;
+      }
+    };
+
+    decreaseBulletSpeed.onclick = function () {
+      if (player.bulletSpeed - 4 > 0) {
+        player.bulletSpeed -= 1;
+        player.cash += player.bulletSpeedCurrentCost / 2;
+        player.bulletSpeedCurrentCost =
+          player.bulletSpeedCurrentCost / (player.bulletSpeedCount + 1);
+        bulletSpeedCost.innerHTML = `COST: $${player.bulletSpeedCurrentCost}`;
+        bulletSpeed.innerHTML = `${player.bulletSpeed - 4}`;
         playerCash.innerHTML = `$${player.cash}`;
       }
     };
@@ -114,9 +186,20 @@ export default class EndGame {
         player.cash -= player.bulletDamageCurrentCost;
         player.bulletDamageCurrentCost =
           player.bulletDamageCurrentCost * (player.bulletDamageCount + 1);
-        bulletDamageCost.innerHTML = `COST: ${player.bulletDamageCurrentCost}`;
-        bulletDamage.innerHTML = `${player.bulletDamage}`;
-        highscore.innerHTML = `${player.highscore}`;
+        bulletDamageCost.innerHTML = `COST: $${player.bulletDamageCurrentCost}`;
+        bulletDamage.innerHTML = `${player.bulletDamage - 3}`;
+        playerCash.innerHTML = `$${player.cash}`;
+      }
+    };
+
+    decreaseBulletDamage.onclick = function () {
+      if (player.bulletDamage - 3 > 0) {
+        player.bulletDamage -= 1;
+        player.cash += player.bulletDamageCurrentCost / 2;
+        player.bulletDamageCurrentCost =
+          player.bulletDamageCurrentCost / (player.bulletDamageCount + 1);
+        bulletDamageCost.innerHTML = `COST: $${player.bulletDamageCurrentCost}`;
+        bulletDamage.innerHTML = `${player.bulletDamage - 3}`;
         playerCash.innerHTML = `$${player.cash}`;
       }
     };
@@ -127,9 +210,20 @@ export default class EndGame {
         player.cash -= player.fireRateCurrentCost;
         player.fireRateCurrentCost =
           player.fireRateCurrentCost * (player.fireRateCount + 1);
-        fireRateCost.innerHTML = `COST: ${player.fireRateCurrentCost}`;
+        fireRateCost.innerHTML = `COST: $${player.fireRateCurrentCost}`;
         fireRate.innerHTML = `${10 - player.fireRate}`;
-        highscore.innerHTML = `${player.highscore}`;
+        playerCash.innerHTML = `$${player.cash}`;
+      }
+    };
+
+    decreaseFireRate.onclick = function () {
+      if (10 - player.fireRate > 0) {
+        player.fireRate += 1;
+        player.cash += player.fireRateCurrentCost / 2;
+        player.fireRateCurrentCost =
+          player.fireRateCurrentCost / (player.fireRateCount + 1);
+        fireRateCost.innerHTML = `COST: $${player.fireRateCurrentCost}`;
+        fireRate.innerHTML = `${10 - player.fireRate}`;
         playerCash.innerHTML = `$${player.cash}`;
       }
     };
@@ -140,9 +234,20 @@ export default class EndGame {
         player.cash -= player.bulletWidthCurrentCost;
         player.bulletWidthCurrentCost =
           player.bulletWidthCurrentCost * (player.bulletWidthCount + 1);
-        bulletWidthCost.innerHTML = `COST: ${player.bulletWidthCurrentCost}`;
-        bulletWidth.innerHTML = `${player.bulletWidth}`;
-        highscore.innerHTML = `${player.highscore}`;
+        bulletWidthCost.innerHTML = `COST: $${player.bulletWidthCurrentCost}`;
+        bulletWidth.innerHTML = `${player.bulletWidth - 2}`;
+        playerCash.innerHTML = `$${player.cash}`;
+      }
+    };
+
+    decreaseBulletWidth.onclick = function () {
+      if (player.bulletWidth - 2 > 0) {
+        player.bulletWidth -= 1;
+        player.cash += player.bulletWidthCurrentCost / 2;
+        player.bulletWidthCurrentCost =
+          player.bulletWidthCurrentCost / (player.bulletWidthCount + 1);
+        bulletWidthCost.innerHTML = `COST: $${player.bulletWidthCurrentCost}`;
+        bulletWidth.innerHTML = `${player.bulletWidth - 2}`;
         playerCash.innerHTML = `$${player.cash}`;
       }
     };
@@ -173,15 +278,17 @@ export default class EndGame {
       this.player.highscore = this.score.score;
     }
     bulletSpeedCost.innerHTML = `COST: $${this.player.bulletSpeedCurrentCost}`;
-    bulletSpeed.innerHTML = `${4 - this.player.bulletSpeed}`;
+    bulletSpeed.innerHTML = `${Math.abs(4 - this.player.bulletSpeed)}`;
     bulletDamageCost.innerHTML = `COST: $${this.player.bulletDamageCurrentCost}`;
-    bulletDamage.innerHTML = `${3 - this.player.bulletDamage}`;
+    bulletDamage.innerHTML = `${Math.abs(3 - this.player.bulletDamage)}`;
     bulletWidthCost.innerHTML = `COST: $${this.player.bulletWidthCurrentCost}`;
-    bulletWidth.innerHTML = `${2 - this.player.bulletWidth}`;
-    heatSeekCost.innerHTML = `COST: $${this.player.heatSeekCost}`;
+    bulletWidth.innerHTML = `${Math.abs(2 - this.player.bulletWidth)}`;
+    heatSeekCost.innerHTML = `COST: $${
+      this.player.heatSeekCost[this.player.heatSeekCount]
+    }`;
     heatSeekText.innerHTML = `${this.player.heatSeekText}`;
     fireRateCost.innerHTML = `COST: $${this.player.fireRateCurrentCost}`;
-    fireRate.innerHTML = `${10 - this.player.fireRate}`;
+    fireRate.innerHTML = `${Math.abs(10 - this.player.fireRate)}`;
     highscore.innerHTML = `${this.player.highscore}`;
     scoremodal.innerHTML = `${this.score.score}`;
     playerCash.innerHTML = `$${this.player.cash}`;
