@@ -1,17 +1,29 @@
 import Bullet from "./Bullet.js";
-import Enemy from "./Enemy.js";
 
 export default class BulletController {
   bullets = [];
   timerTillNextBullet = 0;
 
-  constructor(canvas) {
+  constructor(canvas, enemyController) {
     this.canvas = canvas;
+    this.enemyController = enemyController;
   }
 
-  shoot(x, y, speed, damage, delay, degree, width, height) {
+  shoot(x, y, speed, damage, delay, degree, width, height, heatSeek) {
     if (this.timerTillNextBullet <= 0) {
-      this.bullets.push(new Bullet(x, y, speed, damage, degree, width, height));
+      this.bullets.push(
+        new Bullet(
+          x,
+          y,
+          speed,
+          damage,
+          degree,
+          width,
+          height,
+          this.enemyController,
+          heatSeek
+        )
+      );
       this.timerTillNextBullet = delay;
     }
 

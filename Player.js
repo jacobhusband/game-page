@@ -13,6 +13,7 @@ export default class Player {
     this.height = 25;
     this.playerSpeed = 6;
     this.cash = 0;
+    this.heatSeek = false;
 
     // Player weapon attributes
     this.bulletWidth = 2;
@@ -26,10 +27,12 @@ export default class Player {
     this.bulletDamageCurrentCost = 100;
     this.bulletWidthCurrentCost = 300;
     this.fireRateCurrentCost = 200;
+    this.heatSeekCost = 2500;
     this.bulletSpeedCount = 1;
     this.bulletDamageCount = 1;
     this.bulletWidthCount = 1;
     this.fireRateCount = 1;
+    this.heatSeekText = "OFF";
 
     // Bullet position, angle, hit box points
     this.bulletController = bulletController;
@@ -151,7 +154,8 @@ export default class Player {
         this.fireRate,
         this.degree,
         width,
-        height
+        height,
+        this.heatSeek
       );
     }
   }

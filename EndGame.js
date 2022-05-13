@@ -37,6 +37,11 @@ export default class EndGame {
     const fireRate = document.getElementById("bullet-firerate");
     const fireRateCost = document.getElementById("bullet-firerate-cost");
 
+    const turnOnHeatSeek = document.getElementById("turnOnHeatSeek");
+    const turnOff = document.getElementById("turnOffHeatSeek");
+    const heatSeekText = document.getElementById("heat-seek");
+    const heatSeekCost = document.getElementById("heat-seek-cost");
+
     this.canvas = canvas;
     this.score = score;
     this.player = player;
@@ -53,7 +58,9 @@ export default class EndGame {
       bulletWidthCost,
       bulletWidth,
       fireRateCost,
-      fireRate
+      fireRate,
+      heatSeekCost,
+      heatSeekText
     );
     this.showModal(modal);
     this.resetPlayerPosition();
@@ -78,13 +85,23 @@ export default class EndGame {
       }
     };
 
+    turnOnHeatSeek.onclick = function () {
+      if (player.cash >= player.heatSeekCost && player.heatSeek === false) {
+        player.heatSeek = true;
+        player.cash -= player.heatSeekCost;
+        player.heatSeekText = "ON";
+        heatSeekText.innerHTML = `${player.heatSeekText}`;
+        highscore.innerHTML = `${player.highscore}`;
+        playerCash.innerHTML = `$${player.cash}`;
+      }
+    };
+
     increaseBulletSpeed.onclick = function () {
       if (player.cash >= player.bulletSpeedCurrentCost) {
         player.bulletSpeed += 1;
         player.cash -= player.bulletSpeedCurrentCost;
         player.bulletSpeedCurrentCost =
           player.bulletSpeedCurrentCost * (player.bulletSpeedCount + 1);
-        bulletSpeedCost.innerHTML = `COST: ${player.bulletSpeedCurrentCost}`;
         bulletSpeed.innerHTML = `${player.bulletSpeed}`;
         highscore.innerHTML = `${player.highscore}`;
         playerCash.innerHTML = `$${player.cash}`;
@@ -148,18 +165,22 @@ export default class EndGame {
     bulletWidthCost,
     bulletWidth,
     fireRateCost,
-    fireRate
+    fireRate,
+    heatSeekCost,
+    heatSeekText
   ) {
     if (this.player.highscore < this.score.score) {
       this.player.highscore = this.score.score;
     }
-    bulletSpeedCost.innerHTML = `COST: ${this.player.bulletSpeedCurrentCost}`;
-    bulletSpeed.innerHTML = `${this.player.bulletSpeed}`;
-    bulletDamageCost.innerHTML = `COST: ${this.player.bulletDamageCurrentCost}`;
-    bulletDamage.innerHTML = `${this.player.bulletDamage}`;
-    bulletWidthCost.innerHTML = `COST: ${this.player.bulletWidthCurrentCost}`;
-    bulletWidth.innerHTML = `${this.player.bulletWidth}`;
-    fireRateCost.innerHTML = `COST: ${this.player.fireRateCurrentCost}`;
+    bulletSpeedCost.innerHTML = `COST: $${this.player.bulletSpeedCurrentCost}`;
+    bulletSpeed.innerHTML = `${4 - this.player.bulletSpeed}`;
+    bulletDamageCost.innerHTML = `COST: $${this.player.bulletDamageCurrentCost}`;
+    bulletDamage.innerHTML = `${3 - this.player.bulletDamage}`;
+    bulletWidthCost.innerHTML = `COST: $${this.player.bulletWidthCurrentCost}`;
+    bulletWidth.innerHTML = `${2 - this.player.bulletWidth}`;
+    heatSeekCost.innerHTML = `COST: $${this.player.heatSeekCost}`;
+    heatSeekText.innerHTML = `${this.player.heatSeekText}`;
+    fireRateCost.innerHTML = `COST: $${this.player.fireRateCurrentCost}`;
     fireRate.innerHTML = `${10 - this.player.fireRate}`;
     highscore.innerHTML = `${this.player.highscore}`;
     scoremodal.innerHTML = `${this.score.score}`;

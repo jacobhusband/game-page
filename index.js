@@ -12,7 +12,7 @@ canvas.height = window.innerHeight;
 
 const collisionDetector = new CollisionDetector(canvas);
 const enemyController = new EnemyController(canvas);
-const bulletController = new BulletController(canvas);
+const bulletController = new BulletController(canvas, enemyController);
 const score = new Score(canvas, ctx, canvas.width);
 console.log(score.toString);
 const player = new Player(

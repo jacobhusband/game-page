@@ -1,5 +1,15 @@
 export default class Bullet {
-  constructor(x, y, speed, damage, degree, width, height) {
+  constructor(
+    x,
+    y,
+    speed,
+    damage,
+    degree,
+    width,
+    height,
+    enemyController,
+    heatSeek
+  ) {
     this.x = x;
     this.y = y;
     this.speed = speed;
@@ -7,11 +17,13 @@ export default class Bullet {
     this.degree = degree;
     this.width = width;
     this.height = height;
+    this.enemyController = enemyController;
     this.color = "red";
     this.cornerNodes = [];
+    this.differenceX = 0;
     this.hp = 1;
-    this.heatSeek = true;
-    this.directionFound = false;
+    this.heatSeek = heatSeek;
+    this.foundTarget = false;
     this.speeds = [
       [0, -this.speed],
       [this.speed, -this.speed],
@@ -22,25 +34,20 @@ export default class Bullet {
       [-this.speed, 0],
       [-this.speed, -this.speed],
     ];
+    this.degrees = [0, 45, 90, 135, 180, 225, 270, 315];
   }
 
   draw(ctx) {
     ctx.fillStyle = this.color;
-    let short = this.width;
-    let long = this.height;
-    let angle45Long = long * Math.cos(Math.PI / 4);
-    let angle45Short = short * Math.cos(Math.PI / 4);
-    let speeds = [];
-    let cornerPoints = [];
-    let degrees = [];
+    let angle45Long = this.height * Math.cos(Math.PI / 4);
+    let angle45Short = this.width * Math.cos(Math.PI / 4);
 
-    degrees = [0, 45, 90, 135, 180, 225, 270, 315];
-    cornerPoints = [
+    let cornerPoints = [
       [
-        [this.x, this.y - long],
+        [this.x, this.y - this.height],
         [this.x, this.y],
-        [this.x + short, this.y],
-        [this.x + short, this.y - long],
+        [this.x + this.width, this.y],
+        [this.x + this.width, this.y - this.height],
       ],
       [
         [this.x, this.y],
@@ -53,9 +60,9 @@ export default class Bullet {
       ],
       [
         [this.x, this.y],
-        [this.x + long, this.y],
-        [this.x + long, this.y + short],
-        [this.x, this.y + short],
+        [this.x + this.height, this.y],
+        [this.x + this.height, this.y + this.width],
+        [this.x, this.y + this.width],
       ],
       [
         [this.x, this.y],
@@ -68,9 +75,9 @@ export default class Bullet {
       ],
       [
         [this.x, this.y],
-        [this.x + short, this.y],
-        [this.x + short, this.y + long],
-        [this.x, this.y + long],
+        [this.x + this.width, this.y],
+        [this.x + this.width, this.y + this.height],
+        [this.x, this.y + this.height],
       ],
       [
         [this.x, this.y],
@@ -82,10 +89,10 @@ export default class Bullet {
         [this.x - angle45Long, this.y + angle45Long],
       ],
       [
-        [this.x - long, this.y],
+        [this.x - this.height, this.y],
         [this.x, this.y],
-        [this.x, this.y + short],
-        [this.x - long, this.y + short],
+        [this.x, this.y + this.width],
+        [this.x - this.height, this.y + this.width],
       ],
       [
         [this.x, this.y],
@@ -99,7 +106,7 @@ export default class Bullet {
     ];
 
     // Find index where angle of bullet matches rectangle corner node positions
-    let i = degrees.indexOf(this.degree);
+    let i = this.degrees.indexOf(this.degree);
     // Save relevant corner points
     this.cornerNodes = [
       [cornerPoints[i][0][0], cornerPoints[i][0][1]],
@@ -120,7 +127,7 @@ export default class Bullet {
       this.cornerNodes[3][1]
     );
     // Move bullet
-    this.moveBullet(this.speeds[i], ctx, i);
+    this.moveBullet(this.speeds[i], i);
     // Add bullet hit points
     this.cornerNodes = this.combineLists(
       this.cornerNodes,
@@ -144,33 +151,41 @@ export default class Bullet {
     ctx.fill();
   }
 
-  moveBullet(displacement, ctx, i) {
+  moveBullet(displacement, index) {
+    let unitVec, directionVec;
     if (!this.heatSeek) {
       this.x += displacement[0];
       this.y += displacement[1];
-    } else if (this.heatSeek == true && this.directionFound == false) {
-      let radius = 300;
-      let step = 10;
-      let point;
-      let unitvec;
-      let points = this.getPointsAroundLocation(radius, step);
-      point = this.findColor(ctx, points, 255, 255, 255);
-      if (point !== undefined) {
-        unitvec = this.calcDirection(point[0], point[1]);
-        console.log(`point: ${point}`);
-        this.speeds[i][0] = unitvec[0] * this.speed;
-        this.speeds[i][1] = unitvec[1] * this.speed;
-        this.x += displacement[0];
-        this.y += displacement[1];
-        this.directionFound = true;
-      } else {
-        this.x += displacement[0];
-        this.y += displacement[1];
-      }
     } else {
-      console.log();
-      this.x += displacement[0];
-      this.y += displacement[1];
+      if (this.foundTarget === false) {
+        for (let i = 0; i < this.enemyController.enemies.length; i++) {
+          if (
+            this.x - 100 < this.enemyController.enemies[i].x &&
+            this.x + 100 > this.enemyController.enemies[i].x &&
+            this.y - 100 < this.enemyController.enemies[i].y &&
+            this.y + 100 > this.enemyController.enemies[i].y
+          ) {
+            this.foundTarget = true;
+            this.enemy = this.enemyController.enemies[i];
+          }
+        }
+        this.x += displacement[0];
+        this.y += displacement[1];
+      } else {
+        unitVec = this.calcDirection(this.enemy.x, this.enemy.y);
+        directionVec = unitVec.map((x) => x * this.speed);
+        this.oldX = this.x;
+        this.oldY = this.y;
+        this.x += directionVec[0];
+        this.y += directionVec[1];
+        this.oldDifferenceX = this.differenceX;
+        this.differenceX = Math.abs(this.oldX - this.x);
+        console.log(`${this.enemy.x}`);
+        if (this.oldDifferenceX === this.differenceX) {
+          console.log(`Stagnant`);
+          this.hp = 0;
+        }
+      }
     }
   }
 
@@ -209,32 +224,6 @@ export default class Bullet {
 
   toRadians(angle) {
     return angle * (Math.PI / 180);
-  }
-
-  getPointsAroundLocation(radius, step) {
-    let points = [];
-    let x, y;
-    for (let i = 0; i <= 360; i += step) {
-      x = radius * Math.cos(this.toRadians(i));
-      y = radius * Math.sin(this.toRadians(i));
-      x += this.x;
-      y += this.y;
-      points.push([x, y]);
-    }
-    return points;
-  }
-
-  findColor(ctx, points, r, g, b) {
-    let pixel;
-    for (let i = 0; i < points.length; i++) {
-      pixel = ctx.getImageData(points[i][0], points[i][1], 1, 1).data;
-      if (pixel[0] >= r - 10 && pixel[1] >= g - 10 && pixel[2] >= b - 10) {
-        // console.log(`pixel: ${pixel}, item 1: ${item[0]}, item 2: ${item[1]}`);
-        return [points[i][0], points[i][1]];
-      } else {
-        return undefined;
-      }
-    }
   }
 
   calcDirection(pX, pY) {
